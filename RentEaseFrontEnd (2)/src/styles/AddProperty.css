@@ -1,0 +1,177 @@
+/* Container Styling */
+.add-property-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* Input Fields & Select Boxes */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  transition: border 0.3s ease-in-out;
+}
+
+.input-field:focus {
+  border-color: #ff5733;
+  box-shadow: 0 0 8px rgba(255, 87, 51, 0.3);
+  outline: none;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* File Input */
+.file-input {
+  width: 100%;
+  font-size: 14px;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s ease-in-out;
+}
+
+.file-input:focus {
+  border-color: #ff5733;
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #ff5733;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: #d42e00;
+  transform: translateY(-2px);
+}
+
+.submit-button:disabled {
+  background-color: #ff5733;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .add-property-container {
+    width: 60%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-property-container {
+    width: 95%;
+    padding: 15px;
+  }
+  .input-field, .file-input {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .submit-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.checkbox-group label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Custom Checkbox */
+.checkbox-group input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ff5733;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+  background-color: #ff5733;
+  border-color: #ff5733;
+}
+
+.checkbox-group input[type="checkbox"]::before {
+  content: "✔";
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.checkbox-group input[type="checkbox"]:checked::before {
+  opacity: 1;
+}
+
+/* Hover Effect */
+.checkbox-group label:hover input[type="checkbox"] {
+  border-color: #d42e00;
+}
+

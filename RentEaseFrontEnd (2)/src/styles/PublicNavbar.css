@@ -1,0 +1,25 @@
+/* PublicNavBar.css */
+.navbar {
+    padding: 0.5rem 1rem; /* Add some padding for better spacing */
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem; /* Increase brand font size */
+    font-weight: bold; /* Make the brand name bold */
+  }
+  
+  .nav-link {
+    font-size: 1.1rem; /* Slightly larger font size for links */
+    margin-right: 1rem; /* Add spacing between links */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .nav-link:hover {
+    color: #ff6f61 !important; /* Change link color on hover */
+  }
+  
+  /* Ensure the text color is white for all elements */
+  .navbar-brand.text-white,
+  .nav-link.text-white {
+    color: white !important;
+  }

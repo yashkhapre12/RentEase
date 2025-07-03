@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "vMTOzdUb7PBU/BhN7fIaJ5p418wzkj06y+ZdAXLmIk0=",
+  "Source": "p11transaction",
+  "BasePath": "_content/p11transaction",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
