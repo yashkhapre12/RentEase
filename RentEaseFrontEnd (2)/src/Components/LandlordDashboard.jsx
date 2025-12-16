@@ -7,7 +7,7 @@
 //   const landlordName = location.state?.username || "Landlord"; // Extracted username from email
 //   const [showRegister, setShowRegister] = useState(false);
 //   const navigate = useNavigate(); // Initialize the useNavigate hook
-  
+
 //   return (
 //     <div className="p-6 max-w-lg mx-auto" style={{ position: 'relative' }}>
 //       <h1 className="text-2xl font-bold">Welcome to the RentEase, {landlordName}!</h1>
@@ -75,7 +75,7 @@
 //   return (
 //     <div className="p-6 max-w-lg mx-auto" style={{ position: "relative" }}>
 //       <h1 className="text-2xl font-bold">Welcome to RentEase, {landlordName}!</h1>
-      
+
 //       <button
 //         style={{
 //           position: "absolute",
@@ -90,7 +90,7 @@
 //       >
 //         Add Property +
 //       </button>
-      
+
 //       <button
 //         style={{
 //           position: "absolute",
@@ -115,12 +115,13 @@
 
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import "../styles/LandlordDashboard.css";
+import { crudApi } from "../api/axiosConfig";
+import toast from "react-hot-toast";
+import "../styles/Dashboard.css";
 
 const LandlordDashboard = () => {
   const location = useLocation();
-  const landlordName = location.state?.username || "Landlord"; 
+  const landlordName = location.state?.username || "Landlord";
   const navigate = useNavigate();
   let id = sessionStorage.getItem("userId");
 
@@ -129,26 +130,45 @@ const LandlordDashboard = () => {
   const handleShowProperties = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8110/crud/getProperty/${id}`);
+      const response = await crudApi.get(`/property/getProperty/${id}`);
       navigate("/showproperty", { state: { properties: response.data } });
     } catch (error) {
       console.error("Error fetching properties:", error);
+      toast.error("Failed to fetch properties.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="landlord-dashboard">
-      <h1>Welcome to RentEase, {landlordName}!</h1>
+    <div className="dashboard-container">
+      <div className="page-header">
+        <h1 className="page-title">Welcome, {landlordName}!</h1>
+        <p className="page-subtitle">Manage your properties and tenants</p>
+      </div>
 
-      <div className="button-container">
-        <button onClick={() => navigate("/addproperty")}>
+      <div className="filters-wrapper" style={{ justifyContent: 'center', gap: '15px', flexDirection: 'column', maxWidth: '400px', margin: '0 auto' }}>
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate("/addproperty")}
+        >
           Add Property +
         </button>
 
-        <button onClick={handleShowProperties} disabled={loading}>
-          {loading ? "Loading..." : "Show my property +"}
+        <button
+          className="btn btn-secondary"
+          onClick={() => navigate("/chats")}
+        >
+          My Chats
+        </button>
+
+        <button
+          className="btn btn-outline-primary"
+          onClick={handleShowProperties}
+          disabled={loading}
+          style={{ padding: '0.75rem 1.5rem', minWidth: '150px' }}
+        >
+          {loading ? <div className="spinner" style={{ width: '20px', height: '20px', margin: 0, borderWidth: '2px' }}></div> : "Show my property"}
         </button>
       </div>
     </div>

@@ -1,8 +1,8 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using p11transaction.Models;
-using Steeltoe.Discovery.Client;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +38,7 @@ builder.Services.AddCors(policybuilder => policybuilder.AddDefaultPolicy(policy 
     policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader()));
 
 //for microservice
-builder.Services.AddDiscoveryClient(builder.Configuration);
+
 
 
 builder.Services.AddControllers();
@@ -61,7 +61,7 @@ app.UseCors("AllowAll");
 app.UseRouting();
 // Maps API endpoints
 //app.UseHttpsRedirection();
-app.UseDiscoveryClient(); //Microservices
+
 
 app.UseAuthorization();
 app.MapControllers();

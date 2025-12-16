@@ -353,9 +353,10 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"; // For API requests
+import { authApi } from "../api/axiosConfig"; // For API requests
 import { useForm } from "react-hook-form";
-import "../styles/UserRegistration.css";
+import "../styles/Navbar.css";
+import "../styles/Auth.css";
 
 const UserRegistration = () => {
   const [roles, setRoles] = useState([]);
@@ -373,7 +374,7 @@ const UserRegistration = () => {
     // Fetch roles
     const fetchRoles = async () => {
       try {
-        const response = await axios.get("http://localhost:8110/auth/getRoles");
+        const response = await authApi.get("/getRoles");
         const filteredRoles = response.data.filter(
           (role) => role.roleName.toLowerCase() !== "admin"
         );
@@ -386,7 +387,7 @@ const UserRegistration = () => {
     // Fetch areas
     const fetchAreas = async () => {
       try {
-        const response = await axios.get("http://localhost:8110/auth/getArea");
+        const response = await authApi.get("/getArea");
         setAreas(response.data);
       } catch (error) {
         console.error("Error fetching areas:", error);
@@ -401,8 +402,8 @@ const UserRegistration = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8110/auth/register",
+      const response = await authApi.post(
+        "/register",
         data
       );
 
@@ -426,183 +427,100 @@ const UserRegistration = () => {
     }
   };
 
+
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">User Registration</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* First Name */}
-        <div className="mb-3">
-          <label className="form-label">First Name</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("firstName", { required: "First name is required" })}
-          />
-          {errors.firstName && (
-            <small className="text-danger">{errors.firstName.message}</small>
-          )}
-        </div>
+    <div className="auth-wrapper">
+      <div className="auth-card" style={{ maxWidth: "600px" }}>
+        <h2 className="auth-title">Create Account</h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">First Name</label>
+              <input
+                type="text"
+                className="form-input"
+                {...register("firstName", { required: "First name is required" })}
+              />
+              {errors.firstName && <small className="text-danger">{errors.firstName.message}</small>}
+            </div>
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Last Name</label>
+              <input
+                type="text"
+                className="form-input"
+                {...register("lastName", { required: "Last name is required" })}
+              />
+              {errors.lastName && <small className="text-danger">{errors.lastName.message}</small>}
+            </div>
+          </div>
 
-        {/* Last Name */}
-        <div className="mb-3">
-          <label className="form-label">Last Name</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("lastName", { required: "Last name is required" })}
-          />
-          {errors.lastName && (
-            <small className="text-danger">{errors.lastName.message}</small>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-input"
+              {...register("email", { required: "Email is required" })}
+            />
+            {errors.email && <small className="text-danger">{errors.email.message}</small>}
+          </div>
 
-        {/* Email */}
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            {...register("email", { required: "Email is required" })}
-          />
-          {errors.email && (
-            <small className="text-danger">{errors.email.message}</small>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-input"
+              {...register("password", { required: "Password is required", minLength: { value: 6, message: "Min 6 chars" } })}
+            />
+            {errors.password && <small className="text-danger">{errors.password.message}</small>}
+          </div>
 
-        {/* Password */}
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
-              },
-            })}
-          />
-          {errors.password && (
-            <small className="text-danger">{errors.password.message}</small>
-          )}
-        </div>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Contact</label>
+              <input type="text" className="form-input" {...register("contact", { required: "Required" })} />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Aadhar No</label>
+              <input type="text" className="form-input" {...register("aadharNo", { required: "Required" })} />
+            </div>
+          </div>
 
-        {/* Aadhar No */}
-        <div className="mb-3">
-          <label className="form-label">Aadhar No</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("aadharNo", {
-              required: "Aadhar number is required",
-              pattern: {
-                value: /^\d{12}$/,
-                message: "Aadhar number must be 12 digits",
-              },
-            })}
-          />
-          {errors.aadharNo && (
-            <small className="text-danger">{errors.aadharNo.message}</small>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Address</label>
+            <textarea className="form-input" rows="2" {...register("address", { required: "Required" })}></textarea>
+          </div>
 
-        {/* Address */}
-        <div className="mb-3">
-          <label className="form-label">Address</label>
-          <textarea
-            className="form-control"
-            {...register("address", { required: "Address is required" })}
-          />
-          {errors.address && (
-            <small className="text-danger">{errors.address.message}</small>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">UPI ID</label>
+            <input type="text" className="form-input" {...register("upiId", { required: "Required" })} />
+          </div>
 
-        {/* Contact */}
-        <div className="mb-3">
-          <label className="form-label">Contact</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("contact", {
-              required: "Contact number is required",
-              pattern: {
-                value: /^\d{10}$/,
-                message: "Contact number must be 10 digits",
-              },
-            })}
-          />
-          {errors.contact && (
-            <small className="text-danger">{errors.contact.message}</small>
-          )}
-        </div>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Role</label>
+              <select className="form-input" {...register("roleId", { required: "Required" })}>
+                <option value="">Select Role</option>
+                {roles.map((role) => <option key={role.roleId} value={role.roleId}>{role.roleName}</option>)}
+              </select>
+            </div>
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Area</label>
+              <select className="form-input" {...register("areaId", { required: "Required" })}>
+                <option value="">Select Area</option>
+                {areas.map((area) => <option key={area.areaid} value={area.areaid}>{area.areaname}</option>)}
+              </select>
+            </div>
+          </div>
 
-        {/* UPI ID */}
-        <div className="mb-3">
-          <label className="form-label">UPI ID</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("upiId", { required: "UPI ID is required" })}
-          />
-          {errors.upiId && (
-            <small className="text-danger">{errors.upiId.message}</small>
-          )}
-        </div>
+          <button type="submit" className="btn btn-primary w-100 mt-3" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
 
-        {/* Role Dropdown */}
-        <div className="mb-3">
-          <label className="form-label">Role</label>
-          <select
-            className="form-select"
-            {...register("roleId", { required: "Role is required" })}
-          >
-            <option value="">Select Role</option>
-            {roles.map((role) => (
-              <option key={role.roleId} value={role.roleId}>
-                {role.roleName}
-              </option>
-            ))}
-          </select>
-          {errors.roleId && (
-            <small className="text-danger">{errors.roleId.message}</small>
-          )}
-        </div>
-
-        {/* Area Dropdown */}
-        <div className="mb-3">
-          <label className="form-label">Area</label>
-          <select
-            className="form-select"
-            {...register("areaId", { required: "Area is required" })}
-          >
-            <option value="">Select Area</option>
-            {areas.map((area) => (
-              <option key={area.areaid} value={area.areaid}>
-                {area.areaname}
-              </option>
-            ))}
-          </select>
-          {errors.areaId && (
-            <small className="text-danger">{errors.areaId.message}</small>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn btn-primary w-100"
-          disabled={loading}
-        >
-          {loading ? "Registering..." : "Register"}
-        </button>
-
-        {/* Link to Login */}
-        <p className="mt-3 text-center">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
-      </form>
+          <div className="auth-footer">
+            Already have an account? <Link to="/login">Login</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

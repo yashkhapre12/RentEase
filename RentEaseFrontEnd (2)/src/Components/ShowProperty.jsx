@@ -8,7 +8,7 @@
 //   const location = useLocation();
 //   const navigate = useNavigate();
 //   const properties = location.state?.properties || [];
-  
+
 //   const [interestedUsers, setInterestedUsers] = useState({});
 //   const [loading, setLoading] = useState({});
 
@@ -107,7 +107,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/ShowProperty.css";
-import InterestedUsers from "./InterestedUsers"; 
+import InterestedUsers from "./InterestedUsers";
+import { transactionApi, crudApi } from "../api/axiosConfig";
 
 const ShowProperty = () => {
   const location = useLocation();
@@ -122,13 +123,8 @@ const ShowProperty = () => {
   const fetchInterestedUsers = async (propertyId) => {
     setLoading((prev) => ({ ...prev, [propertyId]: true }));
     try {
-      const response = await fetch(
-        `https://localhost:8110/TenantProperty/users-by-property/${propertyId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch data");
-
-      const data = await response.json();
-      setInterestedUsers((prev) => ({ ...prev, [propertyId]: data }));
+      const response = await transactionApi.get(`/users-by-property/${propertyId}`);
+      setInterestedUsers((prev) => ({ ...prev, [propertyId]: response.data }));
     } catch (error) {
       console.error("Error fetching interested users:", error);
       setInterestedUsers((prev) => ({ ...prev, [propertyId]: [] }));
@@ -141,11 +137,9 @@ const ShowProperty = () => {
   const toggleAvailability = async (propertyId) => {
     setAvailabilityLoading((prev) => ({ ...prev, [propertyId]: true }));
     try {
-      const response = await fetch(
-        `http://localhost:8110/crud/${propertyId}/toggle-availability`,
-        { method: "PUT" }
+      await crudApi.put(
+        `/property/${propertyId}/toggle-availability`
       );
-      if (!response.ok) throw new Error("Failed to update availability");
 
       // Updating the availability state in UI
       const updatedProperties = properties.map((property) =>

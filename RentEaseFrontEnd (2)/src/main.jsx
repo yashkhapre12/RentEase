@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/global.css"; // Premium Design System
 
 import App from "./App.jsx";
 import { Provider } from "react-redux";

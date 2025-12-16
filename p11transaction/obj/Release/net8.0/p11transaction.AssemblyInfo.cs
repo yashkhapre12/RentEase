@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("p11transaction")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53d166117e912740695e4cc7db6d5af18e8a2d27")]
 [assembly: System.Reflection.AssemblyProductAttribute("p11transaction")]
 [assembly: System.Reflection.AssemblyTitleAttribute("p11transaction")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,21 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/PublicNavBar.css"; // Import the CSS file for custom styles
+import { FaHome, FaSignInAlt, FaUserPlus, FaBuilding } from "react-icons/fa";
+import "../styles/Navbar.css"; // Import the unified CSS file
 
 const PublicNavBar = () => {
   return (
-    <nav className="navbar navbar-expand-sm bg-dark">
-      <div className="container-fluid">
-        <Link to="/" className="navbar-brand text-white">RentEase</Link>
+    <nav className="navbar">
+      <div className="nav-container">
+        <Link to="/" className="navbar-brand">
+          <FaBuilding className="text-primary" />
+          RentEase
+        </Link>
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link to="/" className="nav-link text-white">Home</Link>
+            <Link to="/" className="btn btn-secondary"> {/* Style as button */}
+              <FaHome /> Home
+            </Link>
           </li>
           <li className="nav-item">
-            <Link to="/login" className="nav-link text-white">Login</Link>
+            <Link to="/login" className="btn btn-secondary">
+              <FaSignInAlt /> Login
+            </Link>
           </li>
           <li className="nav-item">
-            <Link to="/register" className="nav-link text-white">Register</Link>
+            <Link to="/register" className="btn btn-primary">
+              <FaUserPlus /> Register
+            </Link>
           </li>
         </ul>
       </div>

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import PublicNavBar from "./Components/PublicNavbar";
 import PrivateNavBar from "./Components/PrivateNavbar";
 import UserRegistration from "./Components/UserRegistration";
@@ -13,6 +14,7 @@ import AddProperty from "./Components/AddProperty";
 import SearchResults from "./Components/SearchResult"; // Import the SearchResults component
 import PropertyList from "./Components/PropertyList";
 import ShowProperty from "./Components/ShowProperty";
+import ChatList from "./Components/ChatList";
 
 function App() {
   // const mystate = useSelector((state) => state.logged);
@@ -20,6 +22,7 @@ function App() {
 
   return (
     <div className="app-content">
+      <Toaster position="top-center" reverseOrder={false} />
       {/* Dynamically show navbar based on login state */}
       {/* {mystate.loggedIn ? <PrivateNavBar /> : <PublicNavBar />} */}
       {isLoggedIn ? <PrivateNavBar /> : <PublicNavBar />}
@@ -39,6 +42,7 @@ function App() {
             <Route path="/showproperty" element={<ShowProperty />} />
             {/* Add the new route for SearchResults */}
             <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/chats" element={<ChatList />} />
             {/* <Route path="/propertylist" element={<PropertyList />} /> */}
           </Routes>
         </div>

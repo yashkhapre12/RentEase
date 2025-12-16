@@ -23,54 +23,53 @@ import lombok.ToString;
 @ToString
 @Table(name = "user")
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userid")
-	private int userId; 
-	
-//	int roleId;
-	
-	@Column(name="firstname")
+	private int userId;
+
+	// int roleId;
+
+	@Column(name = "firstname")
 	private String firstName;
-	
-	@Column(name="lastname")
+
+	@Column(name = "lastname")
 	private String lastName;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "aadharno")
 	private String aadharNo;
-	
-	@Column(name="address")
+
+	@Column(name = "address")
 	private String address;
-	
-	@Column(name="contact")
+
+	@Column(name = "contact")
 	private String contact;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
-	
-	@Column(name="upiid")
+
+	@Column(name = "upiid")
 	private String upiId;
-	
-	//private Integer areaid;
-	
+
+	// private Integer areaid;
+
 	@JsonIgnoreProperties("users")
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name= "areaid")
-	
+	@JoinColumn(name = "areaid")
+
 	Area areaid;
-	
+
 	@JsonIgnoreProperties("users")
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name= "roleid")
+	@JoinColumn(name = "roleid")
 	private Role roleId;
-	
-	
-	@JsonIgnoreProperties("users")
-	 @OneToMany(mappedBy = "userid", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Property> properties;
-	
+
+	@JsonIgnoreProperties("userid")
+	@OneToMany(mappedBy = "userid", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Property> properties;
+
 }

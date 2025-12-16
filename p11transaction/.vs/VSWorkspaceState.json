@@ -1,8 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Models",
-    "\\Properties"
+    "\\bin\\Debug",
+    "\\bin\\Debug\\net8.0",
+    "\\bin\\Debug\\net8.0\\id",
+    "\\bin\\Debug\\net8.0\\is",
+    "\\bin\\Debug\\net8.0\\it",
+    "\\bin\\Debug\\net8.0\\ja",
+    "\\bin\\Debug\\net8.0\\ko",
+    "\\Controllers",
+    "\\Models"
   ],
   "SelectedNode": "\\p11transaction.sln",
   "PreviewInSolutionExplorer": false

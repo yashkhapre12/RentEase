@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { crudApi, transactionApi } from "../api/axiosConfig";
+import toast from "react-hot-toast";
+import "../styles/Dashboard.css"; // Import unified styles
 import InterestedUsers from "./InterestedUsers"; // Import the component
 
 const AdminHome = () => {
@@ -16,15 +18,15 @@ const AdminHome = () => {
     const fetchAllProperties = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          "http://localhost:8110/crud/all/property"
+        const response = await crudApi.get(
+          "/property/all"
         );
         setProperties(response.data);
       } catch (error) {
         console.error(
-          "Error fetching properties:",
           error.response?.data || error.message
         );
+        toast.error("Failed to fetch properties.");
       } finally {
         setLoading(false);
       }
@@ -37,8 +39,8 @@ const AdminHome = () => {
   const fetchInterestedUsers = async (propertyId) => {
     setInterestLoading((prev) => ({ ...prev, [propertyId]: true }));
     try {
-      const response = await axios.get(
-        `https://localhost:8110/TenantProperty/users-by-property/${propertyId}`
+      const response = await transactionApi.get(
+        `/users-by-property/${propertyId}`
       );
       setInterestedUsers((prev) => ({ ...prev, [propertyId]: response.data }));
     } catch (error) {
@@ -53,8 +55,8 @@ const AdminHome = () => {
   const toggleAvailability = async (propertyId) => {
     setAvailabilityLoading((prev) => ({ ...prev, [propertyId]: true }));
     try {
-      const response = await axios.put(
-        `http://localhost:8110/crud/${propertyId}/toggle-availability`
+      const response = await crudApi.put(
+        `/property/${propertyId}/toggle-availability`
       );
 
       if (response.status === 200) {
@@ -69,122 +71,79 @@ const AdminHome = () => {
       }
     } catch (error) {
       console.error("Error toggling availability:", error);
+      toast.error("Failed to update availability.");
     } finally {
       setAvailabilityLoading((prev) => ({ ...prev, [propertyId]: false }));
     }
   };
 
-  return (
-    <div className="show-property-container">
-      <h2 className="show-property-title">Admin Dashboard</h2>
 
-      <button className="go-back-button" onClick={() => navigate(-1)}>
-        ← Go Back
-      </button>
+  return (
+    <div className="dashboard-container">
+      <div className="page-header">
+        <h2 className="page-title">Admin Dashboard</h2>
+        <button className="btn btn-outline-secondary mt-3" onClick={() => navigate(-1)}>
+          ← Go Back
+        </button>
+      </div>
 
       {loading ? (
-        <p>🔍 Loading properties...</p>
+        <div className="spinner"></div>
       ) : properties.length === 0 ? (
-        <p>No properties found.</p>
+        <p className="text-center">No properties found.</p>
       ) : (
         <div className="property-grid">
           {properties.map((property) => (
             <div key={property.propertyid} className="property-card">
-              {property.photos?.length > 0 ? (
-                <img
-                  src={`data:image/jpeg;base64,${property.photos[0].photo}`}
-                  alt="Property"
-                  className="property-image"
-                />
-              ) : (
-                <p className="text-gray-500">No images available</p>
-              )}
-
-              <div className="property-details">
-                <h3>{property.address}</h3>
-                <p>
-                  <strong>Area:</strong> {property.areaid.areaname} (Pincode:{" "}
-                  {property.areaid.pincode})
-                </p>
-                <p>
-                  <strong>Rent:</strong> ₹{property.rent} / month
-                </p>
-                <p>
-                  <strong>Security Deposit:</strong> ₹{property.securitydeposit}
-                </p>
-                <p>
-                  <strong>Size:</strong> {property.sqfeet} sq. ft.
-                </p>
-                <p>
-                  <strong>Lease Duration:</strong> {property.leaseduration}
-                </p>
-                <p>
-                  <strong>Additional Charges:</strong> ₹
-                  {property.additionalcharges}
-                </p>
-                <p>
-                  <strong>Available:</strong>{" "}
-                  {property.available ? "Yes" : "No"}
-                </p>
-                <p>
-                  <strong>Gas Connection:</strong>{" "}
-                  {property.gasconnection ? "Yes" : "No"}
-                </p>
-                <p>
-                  <strong>Parking:</strong>{" "}
-                  {property.parking ? "Available" : "Not Available"}
-                </p>
-                <p>
-                  <strong>Listed On:</strong>{" "}
-                  {new Date(property.created_at).toLocaleDateString()}
-                </p>
+              <div className="property-image-wrapper">
+                {property.photos?.length > 0 ? (
+                  <img
+                    src={`data:image/jpeg;base64,${property.photos[0].photo}`}
+                    alt="Property"
+                    className="property-image"
+                  />
+                ) : (
+                  <div className="property-image" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>
+                )}
               </div>
 
-              <div className="landlord-details">
-                <h4>Landlord Details</h4>
-                <p>
-                  <strong>Name:</strong> {property.userid.firstName}{" "}
-                  {property.userid.lastName}
-                </p>
-                <p>
-                  <strong>Contact:</strong> {property.userid.contact}
-                </p>
-                <p>
-                  <strong>Email:</strong> {property.userid.email}
-                </p>
-                <p>
-                  <strong>Aadhar No:</strong> {property.userid.aadharNo}
-                </p>
-                <p>
-                  <strong>UPI ID:</strong> {property.userid.upiId}
-                </p>
+              <div className="property-content">
+                <h3 className="property-address">{property.address}</h3>
+                <div className="property-price">₹{property.rent} <span style={{ fontSize: '0.9rem', fontWeight: 'normal' }}>/ month</span></div>
+
+                <div className="property-specs">
+                  <div className="spec-item">Area: {property.areaid.areaname}</div>
+                  <div className="spec-item">Deposit: ₹{property.securitydeposit}</div>
+                  <div className="spec-item">Size: {property.sqfeet} sqft</div>
+                  <div className="spec-item">Available: <span className={`badge ${property.available ? 'badge-success' : 'badge-warning'}`}>{property.available ? "Yes" : "No"}</span></div>
+                </div>
+
+                {/* Actions */}
+                <div className="d-flex flex-column gap-2 mt-3">
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() => fetchInterestedUsers(property.propertyid)}
+                    disabled={interestLoading[property.propertyid]}
+                  >
+                    {interestLoading[property.propertyid] ? "Loading..." : "Check Interest"}
+                  </button>
+
+                  {/* Change Availability Button */}
+                  <button
+                    className={`btn btn-sm ${property.available ? 'btn-danger' : 'btn-success'}`}
+                    onClick={() => toggleAvailability(property.propertyid)}
+                    disabled={availabilityLoading[property.propertyid]}
+                  >
+                    {availabilityLoading[property.propertyid] ? "Updating..." : (property.available ? "Mark as Unavailable" : "Mark as Available")}
+                  </button>
+                </div>
+
+                {interestedUsers[property.propertyid] && (
+                  <div className="mt-3">
+                    <InterestedUsers users={interestedUsers[property.propertyid]} />
+                  </div>
+                )}
               </div>
-
-              {/* Check Interested Users Button */}
-              <button
-                className="check-interest-button"
-                onClick={() => fetchInterestedUsers(property.propertyid)}
-                disabled={interestLoading[property.propertyid]}
-              >
-                {interestLoading[property.propertyid]
-                  ? "Loading..."
-                  : "Check if Anyone Interested"}
-              </button>
-
-              {interestedUsers[property.propertyid] && (
-                <InterestedUsers users={interestedUsers[property.propertyid]} />
-              )}
-
-              {/* Change Availability Button */}
-              <button
-                className="change-availability-button"
-                onClick={() => toggleAvailability(property.propertyid)}
-                disabled={availabilityLoading[property.propertyid]}
-              >
-                {availabilityLoading[property.propertyid]
-                  ? "Updating..."
-                  : "Change Availability"}
-              </button>
             </div>
           ))}
         </div>
